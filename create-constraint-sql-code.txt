@@ -1,0 +1,130 @@
+-- create database e-shop;
+-- use e-shop;
+
+-- Buyer is the customer in our e-shop
+create table Buyer
+(
+BuyerID varchar(10) NOT null UNIQUE,
+First_Name varchar(100) NOT NULL,
+Last_Name varchar(100) NOT NULL,
+Email varchar(100) NOT NULL,
+Phone_Number char(15) NULL,
+city varchar(50) NOT NULL,
+country varchar(50) NOT NULL,
+
+primary key (BuyerID)
+);
+
+-- Employee
+
+create table Employee
+(
+EmployeeID varchar(10) NOT NULL UNIQUE,
+First_Name varchar(200) NOT NULL,
+Last_Name varchar(100) NOT NULL,
+Email varchar(100) NOT NULL,
+Phone_Number char(15) NULL,
+city varchar(50) NOT NULL,
+country varchar(50) NOT NULL,
+
+primary key (EmployeeID)
+);
+
+-- Product_Type is the relation/table for type of products under sale
+
+create table Product_Type
+(
+Product_TypeID varchar(10) NOT NULL,
+Product_Type_Name varchar(100) NOT NULL,
+Product_Type_Desc varchar(100) NOT NULL,
+
+primary key (Product_TypeID)
+);
+
+
+-- Product - goods under sale
+
+create table Product
+(
+ProductID varchar(10) NOT NULL,
+Product_Title varchar(100) NOT NULL,
+Product_desc varchar(100) null,
+Unit_Price float NOT NULL,
+languages varchar(10) null,
+genre varchar(10) null,
+Product_TypeID varchar(10) NOT NULL,
+EmployeeID varchar(10) NOT NULL,
+Release_Date varchar(20) null,
+
+primary key (ProductID),
+foreign key(Product_TypeID) 
+        references Product_Type(Product_TypeID),
+foreign key(EmployeeID) 
+        references Employee(EmployeeID) 
+);
+
+
+
+-- ORDER_STATUS 
+
+create table Order_Status
+(
+status_Order_ID VARCHAR(10) NOT NULL,
+status varchar(40) NOT NULL,
+
+primary key (Status_Order_ID)
+);
+
+-- Transaction 
+
+create table Transaction
+(
+TransactionID varchar(10) NOT NULL,
+Transaction_date DATE NULL,
+total_amount float NOT NULL,
+Transaction_type varchar(16) NOT NULL,
+
+primary key (TransactionID)
+);
+
+-- Buyer_Order 
+
+create table Buyer_Order 
+(
+Buyer_OrderID varchar(10) NOT NULL,
+BuyerID varchar(10) NOT NULL,
+TransactionID varchar(10) NOT NULL,
+status_Order_ID varchar(10) NOT NULL,
+Order_Purchase_Timestamp DATE NULL,
+Order_Approved_At DATE NULL,
+Delivery_Date DATE NULL,
+
+primary key (Buyer_OrderID),
+foreign key(BuyerID) 
+        references Buyer(BuyerID),
+foreign key(status_Order_ID) 
+        references Order_Status(status_Order_ID),
+foreign key(TransactionID) 
+        references Transaction(TransactionID) 
+);
+
+
+-- Order_Products 
+
+create table Order_Products
+(
+Buyer_OrderID varchar(15) NOT NULL,
+Order_ProductID varchar(15) NOT NULL,
+ProductID varchar(15) NOT NULL,
+EmployeeID varchar(15) NOT NULL,
+quantity integer NOT NULL,
+
+primary key (Order_ProductID),
+foreign key(Buyer_OrderID) 
+        references Buyer_Order (Buyer_OrderID),
+foreign key(ProductID) 
+        references Product(ProductID),
+foreign key(EmployeeID) 
+        references Employee(EmployeeID) 
+);
+

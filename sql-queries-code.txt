@@ -1,0 +1,71 @@
+-- 4. Provide SQL statements for the following queries:
+--    a. Extract all the customers from a specific city.
+  
+SELECT * from Buyer as c
+WHERE
+c.city = "Washington";
+
+--    b. Search for a product of a specific genre
+
+SELECT * from Product as p
+WHERE
+p.genre = 'genre-b';
+
+--     c. Count how many customers are from a specific city.
+
+SELECT COUNT(BuyerID)
+FROM Buyer
+WHERE
+city = "Washington";
+
+--      d. Calculate the average of the unit price.
+SELECT AVG(Unit_Price)
+FROM Product;
+
+--      e. Extract all current orders
+SELECT * 
+FROM
+Buyer_Order WHERE
+Order_Purchase_Timestamp = "2022-1-12"
+;
+
+--       f. Extract all orders for books that has the keyword “the” in their description
+
+SELECT *
+FROM  Order_Products as op
+INNER JOIN Product ON op.ProductID=Product.ProductID
+WHERE 
+Product.Product_desc LIKE '%the%';
+
+--        g. Extract all Transactions with credit cards for music records.
+
+SELECT *
+FROM  Order_Products as op
+INNER JOIN Product ON op.ProductID=Product.ProductID
+INNER JOIN Product_Type ON Product.Product_TypeID=Product_Type.Product_TypeID
+INNER JOIN Buyer_Order ON op.Buyer_OrderID=Buyer_Order.Buyer_OrderID
+INNER JOIN Transaction ON Buyer_Order.TransactionID=Transaction.TransactionID
+WHERE 
+Product_Type.Product_Type_Name = "music records" AND
+Transaction.Transaction_type = "Credit card"
+;
+
+--        h. Count how many employees handle music records.
+SELECT COUNT(Employee.EmployeeID)
+FROM Product 
+INNER JOIN Employee ON Product.EmployeeID=Employee.EmployeeID
+INNER JOIN Product_Type ON Product.Product_TypeID=Product_Type.Product_TypeID
+WHERE
+Product_Type.Product_Type_Name = "music records";
+
+--        i. Count how many employees first name is John.
+
+SELECT COUNT(EmployeeID)
+FROM Employee
+WHERE
+Employee.First_Name = "John";
+
+--        j. Count how many orders are in the system.
+SELECT * 
+FROM
+Buyer_Order;
